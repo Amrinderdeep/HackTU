@@ -13,8 +13,8 @@ def handle_message(message):
         send(message, broadcast=True)
 
 @app.route('/')
-def index():
-    return render_template("index.html")
+def chat():
+    return render_template("chat.html")
 
 if __name__ == "__main__":
-    socketio.run(app, host="")
+    socketio.run(app, host="172.31.113.12")
