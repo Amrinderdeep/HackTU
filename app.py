@@ -1,15 +1,20 @@
-from flask import Flask
-import env
-from routes.api import api
-from routes.core import core
-from models import db
+from flask import Flask, render_template
+from flask_socketio import SocketIO, send
+
 
 app = Flask(__name__)
-app.secret_key = env.SECRET_KEY
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///freekart.db"
-app.config["UPLOAD_FOLDER"] = env.UPLOAD_FOLDER
+app.secret_key = "secretkey123"
+socketio = SocketIO(app, cors_allowed_origins = "*")
 
-db.init_app(app)
+@socketio.on("message")
+def handle_message(message):
+    print("Recieved message: " + message)
+    if message != "User Connected":
+        send(message, broadcast=True)
 
-app.register_blueprint(api, url_prefix="/api")
-app.register_blueprint(core, url_prefix="/")
+@app.route('/')
+def index():
+    return render_template("index.html")
+
+if __name__ == "__main__":
+    socketio.run(app, host="")
