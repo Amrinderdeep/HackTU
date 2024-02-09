@@ -17,4 +17,4 @@ def chat():
     return render_template("chat.html")
 
 if __name__ == "__main__":
-    socketio.run(app, host="172.31.113.12")
+    socketio.run(app, host="localhost")
