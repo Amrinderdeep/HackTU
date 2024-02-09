@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.secret_key = "secretkey123"
 socketio = SocketIO(app, cors_allowed_origins = "*")
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///parking.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -21,8 +21,8 @@ class users(db.Model):
     user_id = db.Column(db.String(36), default=str(uuid.uuid4()), unique=True, primary_key=True)
     
 # with app.app_context():
-#     db.drop_all()
-#     db.create_all()
+#      db.drop_all()
+#      db.create_all()
 
 @socketio.on("message")
 def handle_message(message):
