@@ -1,35 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title> Chat </title>
-        <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
-        <script src=" https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"> </script>
-    </head>
-    
-    <body>
-        <script type ="text/javascript">
-            $(document).ready(function() {
-                var socket = io.connect("http://172.31.113.12:5000")
-                socket.on("connect", function(){
-                    socket.send("User Connected");
-                });
-                socket.on("message", function(data){
-                    $("#messages").append($("<p>").text(data));
-                });
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <style>
+        /* General styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
 
-                $("#sendBtn").on("click", function (){
-                    socket.send($("#username").val() + ": " + $("#message").val());
-                    $("#message").val("");
-                });
-            })
-        </script>
-        <div id = "messages">
+        /* Styling for the navbar */
+        .navbar {
+            background-color: lightblue;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        /* Styling for the logout button */
+        #logoutBtn {
+            padding: 10px 20px;
+            background-color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
 
+        /* Styling for the input field and send button */
+        .input-container {
+            position: fixed;
+            bottom: 0;
+            background-color: lightblue;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+        }
+        #username {
+            width: 150px; /* Reduced width for the username field */
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        #message {
+            flex: 1; /* Take remaining space */
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        #sendBtn {
+            background-color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 5px; /* Adjusted margin to move the button slightly to the left */
+        }
 
-        </div>
-        <input type="text" id = "username" placeholder="Username">
-        <input type="text" id = "message" placeholder="Message">
-        <button id = "sendBtn">Send</button>
-    </body>
+        /* Styling for the message display area */
+        #messages {
+            text-align: center;
+            margin-top: 100px; /* Adjusted to create space for the messages */
+            padding-bottom: 120px; /* Adjusted to keep the messages visible above the input container */
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>TheraPeace</h1>
+        <button id="logoutBtn">Logout</button>
+    </div>
+
+    <div id="messages"></div>
+
+    <!-- Input field and send button -->
+    <div class="input-container">
+        <input type="text" id="username" placeholder="Username">
+        <input type="text" id="message" placeholder="Message">
+        <button id="sendBtn">Send</button>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var socket = io.connect("http://localhost:5000")
+            socket.on("connect", function () {
+                socket.send("User Connected");
+            });
+            socket.on("message", function (data) {
+                $("#messages").append($("<p>").text(data));
+            });
+
+            $("#sendBtn").on("click", function () {
+                socket.send($("#username").val() + ": " + $("#message").val());
+                $("#message").val("");
+            });
+        })
+    </script>
+</body>
 </html>
